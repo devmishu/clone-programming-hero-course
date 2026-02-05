@@ -10,9 +10,9 @@ function loadmilestone() {
     console.log(milestones);
 
     milestones.innerHTML = `${milestonsData.map((milestone) => {
-        return `<div class="milestone border-b">
+        return `<div class="milestone border-b" id="${milestone._id}">
             <div class="flex">
-              <div class="checkbox"><input type="checkbox" /></div>
+              <div class="checkbox"><input type="checkbox"  onchange="markMilestone(this, ${milestone._id})" /></div>
               <div onclick="openMilestone(this, ${milestone._id})">
                 <p>
                   ${milestone.name}
@@ -70,12 +70,24 @@ function showMilestone(id) {
 
 // image load
 const milestoneImage = document.querySelector(".milestoneImage");
-milestoneImage.onload = function(){
+milestoneImage.onload = function () {
     this.style.opacity = "1";
 }
-if (milestoneImage.complete) {
-  console.log("Image already loaded ✅");
-}
 
+// done list 
+
+function markMilestone(checkBox, id) {
+    const doneList = document.querySelector(".doneList");
+    const milestonesList = document.querySelector(".milestones");
+    const item = document.getElementById(id);
+
+    if (checkBox.checked) {
+        milestonesList.removeChild(item);
+        doneList.appendChild(item);
+    } else {
+        milestonesList.appendChild(item);
+        doneList.removeChild(item);
+    }
+}
 
 loadmilestone();
